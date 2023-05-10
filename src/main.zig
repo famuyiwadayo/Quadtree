@@ -31,9 +31,16 @@ pub fn main() !void {
     // print("Northwest {d}\nNortheast {d}\nSouthwest {d}\nSoutheast {d}\n", .{ tree.northwest.points.items.len, tree.northeast.points.items.len, tree.southwest.points.items.len, tree.southeast.points.items.len });
 }
 
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
+// test "simple test" {
+//     var list = std.ArrayList(i32).init(std.testing.allocator);
+//     defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
+//     try list.append(42);
+//     try std.testing.expectEqual(@as(i32, 42), list.pop());
+// }
+
+test "Check Point" {
+    const point = Point(void).init(100, 200, null);
+    try std.testing.expectEqual(point.x, 100);
+    try std.testing.expectEqual(point.y, 200);
+    try std.testing.expectEqual(point.user_data, null);
 }
