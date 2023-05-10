@@ -1,19 +1,34 @@
 const std = @import("std");
+const print = std.debug.print;
+const quadtree = @import("quadtree.zig");
+const Point = quadtree.Point;
+const QuadTree = quadtree.QuadTree;
+const Rectangle = quadtree.Rectangle;
 
 pub fn main() !void {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
+    const GeneralPurposeAllocator = std.heap.GeneralPurposeAllocator;
+    var gpa = GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    // defer _ = gpa.deinit();
 
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+    const point = Point(void).init(100, 120, null);
+    const boundary = Rectangle.init(point, 600, 600);
+    var tree = try QuadTree.init(allocator, boundary);
+    defer tree.deinit();
 
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
+    // _ = try tree.insert(Point(void).init(250, 300, null));
+    // _ = try tree.insert(Point(void).init(250, 300, null));
 
-    try bw.flush(); // don't forget to flush!
+    for (0..1000) |index| {
+        // var new_point = Point(void).init(250, 300, null);
+        _ = try tree.insert(Point(void).init(@intToFloat(f32, index + 1), 300, null));
+    }
+
+    tree.printTree();
+
+    // defer print("{}", .{tree});
+
+    // print("Northwest {d}\nNortheast {d}\nSouthwest {d}\nSoutheast {d}\n", .{ tree.northwest.points.items.len, tree.northeast.points.items.len, tree.southwest.points.items.len, tree.southeast.points.items.len });
 }
 
 test "simple test" {
