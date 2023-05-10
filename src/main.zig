@@ -44,3 +44,10 @@ test "Check Point" {
     try std.testing.expectEqual(point.y, 200);
     try std.testing.expectEqual(point.user_data, null);
 }
+
+test "Check Point Again" {
+    const point = Point(void).init(100, 200, null);
+    try std.testing.expectEqual(point.x, 100);
+    try std.testing.expectEqual(point.y, 200);
+    try std.testing.expectEqual(point.user_data, null);
+}
